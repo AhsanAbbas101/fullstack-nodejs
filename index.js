@@ -33,6 +33,19 @@ app.get('/info', (req,res) => {
     res.send(`Phonebook has info for ${persons.length} people <br/> ${new Date()}`)
 })
 
+app.get('/api/persons/:id', (req,res) => {
+    const id = Number(req.params.id);
+    const person = persons.find(person => person.id === id)
+
+    if (person)
+        res.json(person)
+    else
+    {
+        res.statusMessage = `ID ${id} not found`;
+        res.status(404).end()
+    }
+        
+})
 // Start server
 const PORT = 3001
 app.listen(PORT, ()=> {
