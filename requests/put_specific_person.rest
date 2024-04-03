@@ -11,12 +11,12 @@ content-type: application/json
 }
 
 ###
-PUT http://localhost:3001/api/persons/660d780199d24b5807b71a2e
+PUT http://localhost:3001/api/persons/660d8443fad95adc5f8a1960
 content-type: application/json
 
 {
-    "name": "Dummy",
-    "number": "0900123456"
+    "name": "Dummy1",
+    "number": "09-00123456"
 }
 
 ###

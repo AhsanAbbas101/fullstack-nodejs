@@ -3,7 +3,7 @@ content-type: application/json
 
 {
     "name": "Dummy",
-    "number": "0900123123"
+    "number": "09-1234556"
 }
 
 ###
@@ -11,8 +11,8 @@ POST http://localhost:3001/api/persons/ HTTP/1.1
 content-type: application/json
 
 {
-    "name": "",
-    "number": "0900123123"
+    "name": "d",
+    "number": "09-1234556"
 }
 
 ###
@@ -33,3 +33,11 @@ content-type: application/json
     "number": "0900123123"
 }
 
+###
+POST http://localhost:3001/api/persons/ HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Dummy1",
+    "number": "19-11111"
+}
