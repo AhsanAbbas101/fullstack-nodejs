@@ -1,8 +1,10 @@
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const app = express()
 
+const Person = require('./models/person')
 
 
 morgan.token('req-data', (req,res)=>{
@@ -39,7 +41,12 @@ persons = [
 
 
 app.get('/api/persons', (req, res) => {
-    res.json(persons)
+
+    Person
+        .find({})
+        .then(result=> res.json(result))
+        .catch(error=> console.log(`Error getting data from db - Error Message: ${error.message}`))
+    
 })
 
 app.get('/info', (req,res) => {
