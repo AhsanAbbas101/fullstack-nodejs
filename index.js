@@ -90,6 +90,7 @@ app.post('/api/persons', (req,res)=> {
         })
     }
 
+    /*TODO ignored for now.
     const match = persons.find(p => p.name.toLowerCase() === person.name.toLowerCase())
     if (match)
     {
@@ -97,13 +98,15 @@ app.post('/api/persons', (req,res)=> {
             error: 'name must be unique' 
           })
     }
+    */
 
-    const id = Math.floor(Math.random()* 10000);
+    const newPerson = new Person(person)
 
-    const newPerson = {...person, 'id':id}
-    persons = persons.concat(newPerson)
-
-    res.json(newPerson)
+    newPerson
+        .save()
+        .then(result=> res.json(newPerson))
+        .catch(error=> console.log(`Error adding new person. ${error.message}`))
+    
 })
 
 // Start server
