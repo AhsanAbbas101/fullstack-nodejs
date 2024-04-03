@@ -2,15 +2,14 @@ const mongoose = require('mongoose')
 
 const url = process.env.MONGODB_URI
 
-
 mongoose.set('strictQuery',false)
 
 mongoose.connect(url)
-    .then(result => {
-        console.log('Connected to MongoDB.');
+    .then(() => {
+        console.log('Connected to MongoDB.')
     })
     .catch(error => {
-        console.log(`error connecting to MongoDB: ${error.message}`);
+        console.log(`error connecting to MongoDB: ${error.message}`)
     })
 
 const personSchema = new mongoose.Schema({
@@ -21,7 +20,7 @@ const personSchema = new mongoose.Schema({
     number: {
         type: String,
         minLength: [8, 'Phone number length must be atleast 8, got {VALUE}'],
-        match: [/^\b\d{2,3}-\d+\b$/, "{VALUE} is not a valid phone number!"]
+        match: [/^\b\d{2,3}-\d+\b$/, '{VALUE} is not a valid phone number!']
     }
 })
 

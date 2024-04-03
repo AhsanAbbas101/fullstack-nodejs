@@ -7,7 +7,7 @@ const app = express()
 const Person = require('./models/person')
 
 
-morgan.token('req-data', (req,res)=>{
+morgan.token('req-data', (req) => {
     return JSON.stringify(req.body)
 })
 
@@ -20,9 +20,9 @@ app.get('/api/persons', (req, res, next) => {
 
     Person
         .find({})
-        .then(result=> res.json(result))
-        .catch(error=> next(error))
-    
+        .then(result => res.json(result))
+        .catch(error => next(error))
+
 })
 
 app.get('/info', (req,res,next) => {
@@ -47,7 +47,7 @@ app.get('/api/persons/:id', (req,res,next) => {
                 res.status(404).end()
         })
         .catch(error => next(error))
-     
+
 })
 
 app.delete('/api/persons/:id', (req,res,next) => {
@@ -64,13 +64,13 @@ app.delete('/api/persons/:id', (req,res,next) => {
 
 })
 
-app.post('/api/persons', (req,res, next)=> {
+app.post('/api/persons', (req,res, next) => {
 
     const person = req.body
 
     if (!person.name || !person.number) {
-        return res.status(400).json({ 
-          error: 'content missing' 
+        return res.status(400).json({
+            error: 'content missing'
         })
     }
 
@@ -78,8 +78,8 @@ app.post('/api/persons', (req,res, next)=> {
     const match = persons.find(p => p.name.toLowerCase() === person.name.toLowerCase())
     if (match)
     {
-        return res.status(400).json({ 
-            error: 'name must be unique' 
+        return res.status(400).json({
+            error: 'name must be unique'
           })
     }
     */
@@ -88,13 +88,13 @@ app.post('/api/persons', (req,res, next)=> {
 
     newPerson
         .save()
-        .then(result=> res.json(newPerson))
-        .catch(error=> next(error))
-    
+        .then(() => res.json(newPerson))
+        .catch(error => next(error))
+
 })
 
 app.put('/api/persons/:id',(req,res,next) => {
-    
+
     const body = req.body
 
     const person = {
@@ -112,7 +112,7 @@ app.put('/api/persons/:id',(req,res,next) => {
         .then(result => {
             if (result)
                 res.json(result)
-            else 
+            else
                 res.status(404).json({
                     error: 'Id not found'
                 })
@@ -128,7 +128,7 @@ const errorHander = (error, req, res, next) => {
 
     if (error.name === 'CastError') {
         return res.status(400).send({ error: 'malformatted id' })
-    } 
+    }
     else if (error.name === 'ValidationError') {
         return res.status(400).json({ error: error.message })
     }
@@ -140,6 +140,6 @@ app.use(errorHander)
 
 // Start server
 const PORT = process.env.PORT || 3001
-app.listen(PORT, ()=> {
-    console.log(`Server running on port ${PORT}.`);
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}.`)
 })
