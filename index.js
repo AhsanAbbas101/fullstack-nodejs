@@ -40,12 +40,12 @@ persons = [
 ]
 
 
-app.get('/api/persons', (req, res) => {
+app.get('/api/persons', (req, res, next) => {
 
     Person
         .find({})
         .then(result=> res.json(result))
-        .catch(error=> console.log(`Error getting data from db - Error Message: ${error.message}`))
+        .catch(error=> next(error))
     
 })
 
@@ -67,20 +67,21 @@ app.get('/api/persons/:id', (req,res) => {
         
 })
 
-app.delete('/api/persons/:id', (req,res) => {
-    const id = Number(req.params.id);
-    const person = persons.find(person => person.id === id)
-    let status = 404;
+app.delete('/api/persons/:id', (req,res,next) => {
 
-    if (person)
-    {
-        persons = persons.filter(person => person.id !== id)
-        status = 204;
-    }
-    res.status(status).end()
+    Person
+        .findByIdAndDelete(req.params.id)
+        .then(result => {
+            if (result)
+                res.status(204).end()
+            else
+                res.status(404).end()
+        })
+        .catch(error => next(error))
+
 })
 
-app.post('/api/persons', (req,res)=> {
+app.post('/api/persons', (req,res, next)=> {
 
     const person = req.body
 
@@ -105,9 +106,25 @@ app.post('/api/persons', (req,res)=> {
     newPerson
         .save()
         .then(result=> res.json(newPerson))
-        .catch(error=> console.log(`Error adding new person. ${error.message}`))
+        .catch(error=> next(error))
     
 })
+
+
+
+// Error Handling
+const errorHander = (error, req, res, next) => {
+
+    console.log(error.message)
+
+    if (error.name === 'CastError') {
+        return res.status(400).send({ error: 'malformatted id' })
+    } 
+
+    next(error)
+}
+
+app.use(errorHander)
 
 // Start server
 const PORT = process.env.PORT || 3001

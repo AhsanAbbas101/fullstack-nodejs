@@ -5,3 +5,13 @@ GET http://localhost:3001/api/persons/1
 
 ###
 DELETE http://localhost:3001/api/persons/1000
+
+
+###
+GET http://localhost:3001/api/persons
+
+###
+DELETE http://localhost:3001/api/persons/660d6f6dc0f416223c767fef
+
+###
+DELETE http://localhost:3001/api/persons/malformattedid
