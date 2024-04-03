@@ -1,0 +1,29 @@
+###
+GET http://localhost:3001/api/persons
+
+###
+PUT http://localhost:3001/api/persons/660d780199d24b5807b71a2f
+content-type: application/json
+
+{
+    "name": "Dummy",
+    "number": "0900123456"
+}
+
+###
+PUT http://localhost:3001/api/persons/660d780199d24b5807b71a2e
+content-type: application/json
+
+{
+    "name": "Dummy",
+    "number": "0900123456"
+}
+
+###
+PUT http://localhost:3001/api/persons/malformattedid
+content-type: application/json
+
+{
+    "name": "Dummy",
+    "number": "0900123456"
+}

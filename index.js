@@ -16,30 +16,6 @@ app.use(cors())
 app.use(express.json())
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :req-data'))
 
-persons = [
-    { 
-      "id": 1,
-      "name": "Arto Hellas", 
-      "number": "040-123456"
-    },
-    { 
-      "id": 2,
-      "name": "Ada Lovelace", 
-      "number": "39-44-5323523"
-    },
-    { 
-      "id": 3,
-      "name": "Dan Abramov", 
-      "number": "12-43-234345"
-    },
-    { 
-      "id": 4,
-      "name": "Mary Poppendieck", 
-      "number": "39-23-6423122"
-    }
-]
-
-
 app.get('/api/persons', (req, res, next) => {
 
     Person
@@ -49,22 +25,29 @@ app.get('/api/persons', (req, res, next) => {
     
 })
 
-app.get('/info', (req,res) => {
-    res.send(`Phonebook has info for ${persons.length} people <br/> ${new Date()}`)
+app.get('/info', (req,res,next) => {
+
+    Person
+        .countDocuments({})
+        .then(result => {
+            res.send(`Phonebook has info for ${result} people <br/> ${new Date()}`)
+        })
+        .catch(error => next(error))
+
 })
 
-app.get('/api/persons/:id', (req,res) => {
-    const id = Number(req.params.id);
-    const person = persons.find(person => person.id === id)
+app.get('/api/persons/:id', (req,res,next) => {
 
-    if (person)
-        res.json(person)
-    else
-    {
-        res.statusMessage = `ID ${id} not found`;
-        res.status(404).end()
-    }
-        
+    Person
+        .findById(req.params.id)
+        .then(result => {
+            if (result)
+                res.json(result)
+            else
+                res.status(404).end()
+        })
+        .catch(error => next(error))
+     
 })
 
 app.delete('/api/persons/:id', (req,res,next) => {
@@ -110,7 +93,25 @@ app.post('/api/persons', (req,res, next)=> {
     
 })
 
+app.put('/api/persons/:id',(req,res,next) => {
+    
+    const body = req.body
 
+    const person = {
+        number: body.number
+    }
+
+    Person
+        .findByIdAndUpdate(req.params.id,person,{new: true})
+        .then(result => {
+            if (result)
+                res.json(result)
+            else 
+                res.status(404).end()
+        })
+        .catch(error => next(error))
+
+})
 
 // Error Handling
 const errorHander = (error, req, res, next) => {
